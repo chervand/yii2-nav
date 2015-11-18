@@ -1,0 +1,12 @@
+{
+  "name": "chervand/nav",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "yiisoft/yii2": "*",
+    "yiisoft/yii2-bootstrap": "*"
+  },
+  "autoload": {
+    "psr-4": {"chervand\\nav\\": ""}
+  }
+}

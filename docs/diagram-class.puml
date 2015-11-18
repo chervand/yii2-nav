@@ -1,0 +1,39 @@
+@startuml
+
+namespace chervand.nav.models {
+
+    class Nav {
+        + id : int
+        + title : string
+        + description : text
+        + load () : Nav
+    }
+
+    class Assignment {
+        + nav_id : int
+        + type : int
+        + assignment : string
+    }
+
+    class Item {
+        + name : string
+        + label : string
+        + url : string
+        + description : text
+    }
+
+    class ItemChild {
+        + nav_id : int
+        + parent_name : string
+        + child_name : string
+        + weight : int
+    }
+
+    Nav  "1" -- "0..*" Assignment
+    Nav  "1" -- "0..*" ItemChild
+    Item  "1" -- "0..*"  Item
+    ItemChild .. (Item, Item)
+
+}
+
+@enduml
