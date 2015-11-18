@@ -1,5 +1,5 @@
 {
-  "name": "chervand/nav",
+  "name": "chervand/yii2-nav",
   "type": "library",
   "license": "MIT",
   "require": {
