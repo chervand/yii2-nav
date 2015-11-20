@@ -7,6 +7,7 @@ use chervand\nav\models\Item;
 use chervand\nav\models\ItemChild;
 use chervand\nav\models\Nav;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -15,6 +16,7 @@ use yii\db\ActiveRecord;
  * @property Assignment $navAssignment
  * @property Nav $nav
  * @property Item $navItems
+ * @property array $navItemsAsArray
  * @property ItemChild $navItemsChild
  */
 trait IdentityTrait
@@ -49,9 +51,30 @@ trait IdentityTrait
     public function getNavItems()
     {
         if ($this instanceof ActiveRecord) {
-            return $this->hasMany(Item::className(), ['name' => 'child_name'])
-                ->via('navItemsChild')->with(['childItems']);
+
+            /** @var ActiveQuery $query */
+            $query = $this->hasMany(Item::className(), ['name' => 'child_name'])
+                ->via('navItemsChild');
+
+            return $query->with(['childItems']);
+
         }
+
+        return null;
+    }
+
+    public function getNavItemsAsArray()
+    {
+        if ($this instanceof ActiveRecord) {
+
+            /** @var ActiveQuery $query */
+            $query = $this->hasMany(Item::className(), ['name' => 'child_name'])
+                ->via('navItemsChild');
+
+            return $query->with(['childItems'])->asArray();
+
+        }
+
         return null;
     }
 }

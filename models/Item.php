@@ -9,6 +9,10 @@ use yii\db\ActiveRecord;
 /**
  * Class Item
  * @package chervand\nav
+ * @property string $name
+ * @property string $label
+ * @property string $url
+ * @property string $description
  * @property Item[] $parentItems
  * @property Item[] $childItems
  */
@@ -32,17 +36,5 @@ class Item extends ActiveRecord
     {
         return $this->hasMany(static::className(), ['name' => 'child_name'])
             ->viaTable('{{%nav_item_child}}', ['parent_name' => 'name']);
-    }
-
-    public function extraFields()
-    {
-        return [
-            'items' => function () {
-                if (!empty($this->childItems)) {
-                    return $this->childItems;
-                }
-                return null;
-            }
-        ];
     }
 }

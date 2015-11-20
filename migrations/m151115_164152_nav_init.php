@@ -38,7 +38,7 @@ class m151115_164152_nav_init extends Migration
         $this->createTable('{{%nav_item}}', [
             'name' => $this->string(),
             'label' => $this->string()->notNull(),
-            'url' => $this->string()->notNull(),
+            'url' => $this->string(),
             'description' => $this->text(),
         ], $tableOptions);
 
