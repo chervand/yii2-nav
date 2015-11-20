@@ -150,11 +150,13 @@ class Nav extends \yii\bootstrap\Nav
 
     protected function renderCollapse($items, $item)
     {
+        $id = $this->collapseIdPrefix . ArrayHelper::getValue($item, 'name');
+        $class = static::TOGGLE_COLLAPSE;
+        if (isset($this->options['class'])) {
+            $class .= ' ' . $this->options['class'];
+        }
         return \yii\bootstrap\Nav::widget([
-            'options' => [
-                'id' => $this->collapseIdPrefix . ArrayHelper::getValue($item, 'name'),
-                'class' => static::TOGGLE_COLLAPSE
-            ],
+            'options' => ['id' => $id, 'class' => $class],
             'items' => $items
         ]);
     }
