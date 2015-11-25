@@ -72,6 +72,12 @@ class m151115_164152_nav_init extends Migration
             'CASCADE', 'CASCADE'
         );
 
+        $this->insert('{{%nav_item}}', [
+            'name' => 'root',
+            'label' => 'root',
+            'url' => '#',
+        ]);
+
     }
 
     public function safeDown()
