@@ -1,7 +1,4 @@
 <?php
-/**
- */
-
 namespace chervand\nav\models;
 
 use yii\db\ActiveRecord;
@@ -15,6 +12,8 @@ use yii\db\ActiveRecord;
  * @property string $description
  * @property Item[] $parentItems
  * @property Item[] $childItems
+ * @property ItemChild[] $parentItemsJunctions
+ * @property ItemChild[] $childItemsJunctions
  */
 class Item extends ActiveRecord
 {
@@ -26,15 +25,25 @@ class Item extends ActiveRecord
         return '{{%nav_item}}';
     }
 
+    public function getParentItemsJunctions()
+    {
+        return $this->hasMany(ItemChild::className(), ['child_name' => 'name']);
+    }
+
+    public function getChildItemsJunctions()
+    {
+        return $this->hasMany(ItemChild::className(), ['parent_name' => 'name']);
+    }
+
     public function getParentItems()
     {
         return $this->hasMany(static::className(), ['name' => 'parent_name'])
-            ->viaTable('{{%nav_item_child}}', ['child_name' => 'name']);
+            ->via('parentItemsJunctions');
     }
 
     public function getChildItems()
     {
         return $this->hasMany(static::className(), ['name' => 'child_name'])
-            ->viaTable('{{%nav_item_child}}', ['parent_name' => 'name']);
+            ->via('childItemsJunctions');
     }
 }

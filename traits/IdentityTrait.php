@@ -1,5 +1,4 @@
 <?php
-
 namespace chervand\nav\traits;
 
 use chervand\nav\models\Assignment;
@@ -48,7 +47,6 @@ trait IdentityTrait
 
         return $this->hasOne(Nav::className(), ['id' => 'nav_id'])
             ->via('navAssignment');
-
     }
 
     /**
@@ -78,10 +76,11 @@ trait IdentityTrait
     }
 
     /**
+     * @param bool $populateJunctions
      * @return ActiveQuery
      * @throws ErrorException
      */
-    public function getNavItems()
+    public function getNavItems($populateJunctions = false)
     {
         if (!$this instanceof ActiveRecord) {
             throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
@@ -91,10 +90,25 @@ trait IdentityTrait
         $query = $this->hasMany(Item::className(), ['name' => 'child_name'])
             ->via('navItemsChild');
 
-        return $query->joinWith([
+        if ($populateJunctions === true) {
+            $query->innerJoinWith([
+                'parentItemsJunctions' => function (ActiveQuery $query) {
+                    $query->from(['parentItemJunction' => ItemChild::tableName()]);
+                }
+            ]);
+        } else {
+            $query->innerJoin(
+                ItemChild::tableName() . ' `parentItemJunction`',
+                '`parentItemJunction`.`child_name` = `nav_item`.`name`'
+            );
+        }
+
+        $query->joinWith([
             'childItems' => function (ActiveQuery $query) {
                 $query->from(['childItem' => Item::tableName()]);
-            }
+            },
         ]);
+
+        return $query->orderBy('parentItemJunction.weight');
     }
 }
