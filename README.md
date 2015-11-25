@@ -3,6 +3,7 @@
 ## Data
 
 TBA
+TODO: handle root item
 
 ```
 use \chervand\nav\traits\IdentityTrait;

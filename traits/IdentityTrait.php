@@ -7,6 +7,7 @@ use chervand\nav\models\Item;
 use chervand\nav\models\ItemChild;
 use chervand\nav\models\Nav;
 use Yii;
+use yii\base\ErrorException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -21,60 +22,79 @@ use yii\db\ActiveRecord;
  */
 trait IdentityTrait
 {
+    /**
+     * @return ActiveQuery
+     * @throws ErrorException
+     */
     public function getNavAssignment()
     {
-        if ($this instanceof ActiveRecord) {
-            return $this->hasOne(Assignment::className(), ['assignment' => 'id'])
-                ->orderBy('type ASC');
+        if (!$this instanceof ActiveRecord) {
+            throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
         }
-        return null;
+
+        return $this->hasOne(Assignment::className(), ['assignment' => 'id'])
+            ->orderBy('type ASC');
     }
 
+    /**
+     * @return ActiveQuery
+     * @throws ErrorException
+     */
     public function getNav()
     {
-        if ($this instanceof ActiveRecord) {
-            return $this->hasOne(Nav::className(), ['id' => 'nav_id'])
-                ->via('navAssignment');
+        if (!$this instanceof ActiveRecord) {
+            throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
         }
-        return null;
+
+        return $this->hasOne(Nav::className(), ['id' => 'nav_id'])
+            ->via('navAssignment');
+
     }
 
+    /**
+     * @return ActiveQuery
+     * @throws ErrorException
+     */
     public function getNavItemsChild()
     {
-        if ($this instanceof ActiveRecord) {
-            return $this->hasMany(ItemChild::className(), ['nav_id' => 'id'])
-                ->via('nav')->where(['parent_name' => 'root']);
-        }
-        return null;
-    }
-
-    public function getNavItems()
-    {
-        if ($this instanceof ActiveRecord) {
-
-            /** @var ActiveQuery $query */
-            $query = $this->hasMany(Item::className(), ['name' => 'child_name'])
-                ->via('navItemsChild');
-
-            return $query->with(['childItems']);
-
+        if (!$this instanceof ActiveRecord) {
+            throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
         }
 
-        return null;
+        /** @var ActiveQuery $query */
+        $query = $this->hasMany(ItemChild::className(), ['nav_id' => 'id'])
+            ->via('nav');
+
+        return $query->where(['parent_name' => 'root']);
     }
 
+    /**
+     * @return array
+     * @throws ErrorException
+     */
     public function getNavItemsAsArray()
     {
-        if ($this instanceof ActiveRecord) {
+        return $this->getNavItems()->asArray();
+    }
 
-            /** @var ActiveQuery $query */
-            $query = $this->hasMany(Item::className(), ['name' => 'child_name'])
-                ->via('navItemsChild');
-
-            return $query->with(['childItems'])->asArray();
-
+    /**
+     * @return ActiveQuery
+     * @throws ErrorException
+     */
+    public function getNavItems()
+    {
+        if (!$this instanceof ActiveRecord) {
+            throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
         }
 
-        return null;
+        /** @var ActiveQuery $query */
+        $query = $this->hasMany(Item::className(), ['name' => 'child_name'])
+            ->via('navItemsChild');
+
+        return $query->joinWith([
+            'childItems' => function (ActiveQuery $query) {
+                $query->from(['childItem' => Item::tableName()]);
+            }
+        ]);
     }
 }
