@@ -157,6 +157,7 @@ class Nav extends \yii\bootstrap\Nav
         }
         return \yii\bootstrap\Nav::widget([
             'options' => ['id' => $id, 'class' => $class],
+            'encodeLabels' => $this->encodeLabels,
             'items' => $items
         ]);
     }
