@@ -1,13 +1,12 @@
 {
   "name": "chervand/yii2-nav",
-  "description": "Yii2 Role Based Navigation Module with collapsible Nav widget",
-  "keywords": ["yii2", "extension", "widget", "menu", "role", "identity", "bootstrap", "nav", "navigation"],
+  "description": "Yii2 Role Based Navigation Module",
+  "keywords": ["yii2", "extension", "widget", "menu", "role", "identity", "navigation"],
   "homepage": "https://github.com/chervand/yii2-nav",
   "type": "yii2-extension",
   "license": "MIT",
   "require": {
-    "yiisoft/yii2": "*",
-    "yiisoft/yii2-bootstrap": "*"
+    "yiisoft/yii2": "*"
   },
   "autoload": {
     "psr-4": {"chervand\\nav\\": ""}
