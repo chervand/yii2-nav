@@ -22,7 +22,7 @@ class Item extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%nav_item}}';
+        return '{{%nav__item}}';
     }
 
     public function getParentItemsJunctions()

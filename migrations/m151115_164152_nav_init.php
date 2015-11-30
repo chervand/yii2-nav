@@ -17,62 +17,62 @@ class m151115_164152_nav_init extends Migration
             'description' => $this->text(),
         ], $tableOptions);
 
-        $this->createTable('{{%nav_assignment}}', [
+        $this->createTable('{{%nav__assignment}}', [
             'nav_id' => $this->integer()->notNull(),
             'type' => $this->smallInteger()->notNull(),
             'assignment' => $this->string()->notNull(),
         ], $tableOptions);
 
-        $this->addPrimaryKey('PK_nav_assignment',
-            '{{%nav_assignment}}', ['nav_id', 'type', 'assignment']
+        $this->addPrimaryKey('PK_nav__assignment',
+            '{{%nav__assignment}}', ['nav_id', 'type', 'assignment']
         );
-        $this->addForeignKey('FK_nav_assignment_nav',
-            '{{%nav_assignment}}', 'nav_id',
+        $this->addForeignKey('FK_nav__assignment_nav',
+            '{{%nav__assignment}}', 'nav_id',
             '{{%nav}}', 'id',
             'CASCADE', 'CASCADE'
         );
-        $this->createIndex('IDX_nav_assignment_type',
-            '{{%nav_assignment}}', 'type'
+        $this->createIndex('IDX_nav__assignment_type',
+            '{{%nav__assignment}}', 'type'
         );
 
-        $this->createTable('{{%nav_item}}', [
+        $this->createTable('{{%nav__item}}', [
             'name' => $this->string(),
             'label' => $this->string()->notNull(),
             'url' => $this->string(),
             'description' => $this->text(),
         ], $tableOptions);
 
-        $this->addPrimaryKey('PK_nav_item',
-            '{{%nav_item}}', 'name'
+        $this->addPrimaryKey('PK_nav__item',
+            '{{%nav__item}}', 'name'
         );
 
-        $this->createTable('{{%nav_item_child}}', [
+        $this->createTable('{{%nav__item_child}}', [
             'nav_id' => $this->integer()->notNull(),
             'parent_name' => $this->string()->notNull(),
             'child_name' => $this->string()->notNull(),
             'weight' => $this->smallInteger()->notNull()->defaultValue(0),
         ], $tableOptions);
 
-        $this->addPrimaryKey('PK_nav_item_child',
-            '{{%nav_item_child}}', ['nav_id', 'parent_name', 'child_name']
+        $this->addPrimaryKey('PK_nav__item_child',
+            '{{%nav__item_child}}', ['nav_id', 'parent_name', 'child_name']
         );
-        $this->addForeignKey('FK_nav_item_child_nav',
-            '{{%nav_item_child}}', 'nav_id',
+        $this->addForeignKey('FK_nav__item_child_nav',
+            '{{%nav__item_child}}', 'nav_id',
             '{{%nav}}', 'id',
             'CASCADE', 'CASCADE'
         );
-        $this->addForeignKey('FK_nav_item_child_nav_item_1',
-            '{{%nav_item_child}}', 'parent_name',
-            '{{%nav_item}}', 'name',
+        $this->addForeignKey('FK_nav__item_child_nav__item_1',
+            '{{%nav__item_child}}', 'parent_name',
+            '{{%nav__item}}', 'name',
             'CASCADE', 'CASCADE'
         );
-        $this->addForeignKey('FK_nav_item_child_nav_item_2',
-            '{{%nav_item_child}}', 'child_name',
-            '{{%nav_item}}', 'name',
+        $this->addForeignKey('FK_nav__item_child_nav__item_2',
+            '{{%nav__item_child}}', 'child_name',
+            '{{%nav__item}}', 'name',
             'CASCADE', 'CASCADE'
         );
 
-        $this->insert('{{%nav_item}}', [
+        $this->insert('{{%nav__item}}', [
             'name' => 'root',
             'label' => 'root',
             'url' => '#',
@@ -82,9 +82,9 @@ class m151115_164152_nav_init extends Migration
 
     public function safeDown()
     {
-        $this->dropTable('{{%nav_item_child}}');
-        $this->dropTable('{{%nav_item}}');
-        $this->dropTable('{{%nav_assignment}}');
+        $this->dropTable('{{%nav__item_child}}');
+        $this->dropTable('{{%nav__item}}');
+        $this->dropTable('{{%nav__assignment}}');
         $this->dropTable('{{%nav}}');
     }
 }

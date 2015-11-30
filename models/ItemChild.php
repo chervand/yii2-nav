@@ -13,6 +13,6 @@ class ItemChild extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%nav_item_child}}';
+        return '{{%nav__item_child}}';
     }
 }

@@ -13,6 +13,6 @@ class Assignment extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%nav_assignment}}';
+        return '{{%nav__assignment}}';
     }
 }
