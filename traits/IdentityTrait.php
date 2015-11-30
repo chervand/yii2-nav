@@ -99,7 +99,7 @@ trait IdentityTrait
         } else {
             $query->innerJoin(
                 ItemChild::tableName() . ' `parentItemJunction`',
-                '`parentItemJunction`.`child_name` = `nav_item`.`name`'
+                '`parentItemJunction`.`child_name` = ' . Item::tableName() . '.`name`'
             );
         }
 
