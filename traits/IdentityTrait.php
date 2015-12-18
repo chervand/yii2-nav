@@ -31,6 +31,7 @@ trait IdentityTrait
             throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
         }
 
+        /** @var ActiveRecord $this */
         return $this->hasOne(Assignment::className(), ['assignment' => 'id'])
             ->orderBy('type ASC');
     }
@@ -45,6 +46,7 @@ trait IdentityTrait
             throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
         }
 
+        /** @var ActiveRecord $this */
         return $this->hasOne(Nav::className(), ['id' => 'nav_id'])
             ->via('navAssignment');
     }
@@ -59,6 +61,7 @@ trait IdentityTrait
             throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
         }
 
+        /** @var ActiveRecord $this */
         /** @var ActiveQuery $query */
         $query = $this->hasMany(ItemChild::className(), ['nav_id' => 'id'])
             ->via('nav');
@@ -86,6 +89,7 @@ trait IdentityTrait
             throw new ErrorException(__CLASS__ . ' is not instance of yii\db\ActiveRecord.');
         }
 
+        /** @var ActiveRecord $this */
         /** @var ActiveQuery $query */
         $query = $this->hasMany(Item::className(), ['name' => 'child_name'])
             ->via('navItemsChild');
