@@ -2,8 +2,8 @@
 
 namespace chervand\nav\models;
 
-use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * Class Nav
@@ -24,9 +24,33 @@ class Nav extends ActiveRecord
         return '{{%nav}}';
     }
 
-    public static function findByUserId($userId)
+    /**
+     * @param integer $userId
+     * @param string $widget
+     * @param null|string $route
+     * @return null|ActiveRecord
+     */
+    public static function findByAssignment($userId, $widget, $route = null)
     {
-        return Nav::find()->one();
+        return static::find()
+            ->innerJoinWith([
+                'assignments' => function (ActiveQuery $query) {
+                    $query->from(['assignment' => Assignment::tableName()]);
+                }
+            ])
+            ->andWhere('`assignment`.`user_id` = :user_id')
+            ->andWhere('`assignment`.`widget` = :widget')
+            ->andWhere('`assignment`.`route` = :route OR `assignment`.`route` IS NULL')
+            ->params([
+                ':user_id' => $userId,
+                ':widget' => $widget,
+                ':route' => $route,
+            ])
+            ->orderBy([
+                'assignment.route' => SORT_DESC,
+                'assignment.id' => SORT_DESC,
+            ])
+            ->one();
     }
 
     public function getItemsJunctions()
@@ -34,6 +58,14 @@ class Nav extends ActiveRecord
         return $this->hasMany(ItemChild::className(), ['nav_id' => 'id']);
     }
 
+    public function getItemsAsArray()
+    {
+        return $this->getItems()->asArray();
+    }
+
+    /**
+     * @return ActiveQuery
+     */
     public function getItems()
     {
         return $this->hasMany(Item::className(), ['name' => 'child_name'])
@@ -41,10 +73,5 @@ class Nav extends ActiveRecord
             ->via('itemsJunctions', function (ActiveQuery $query) {
                 $query->andWhere(['parent_name' => 'root']);
             });
-    }
-
-    public function getItemsAsArray()
-    {
-        return $this->getItems()->asArray();
     }
 }

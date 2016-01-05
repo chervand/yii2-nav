@@ -24,19 +24,17 @@ class m151115_164152_nav_init extends Migration
             'title' => $this->string()->notNull(),
             'description' => $this->text(),
             'root_item' => $this->string()->notNull()->defaultValue('root'),
-            'block' => $this->string()->notNull(),
-            'route' => $this->string(),
             'FOREIGN KEY (`root_item`) REFERENCES {{%nav__item}} (`name`) ON DELETE RESTRICT ON UPDATE CASCADE',
-            'UNIQUE KEY (`block`, `route`)',
         ], $tableOptions);
 
         $this->createTable('{{%nav__assignment}}', [
+            'id' => $this->primaryKey(),
             'nav_id' => $this->integer()->notNull(),
-            'type' => $this->smallInteger()->notNull(),
-            'assignment' => $this->string()->notNull(),
-            'PRIMARY KEY (`nav_id`, `type`, `assignment`)',
+            'user_id' => $this->integer()->notNull(),
+            'widget' => $this->string()->notNull(),
+            'route' => $this->string(),
             'FOREIGN KEY (`nav_id`) REFERENCES {{%nav}} (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
-            'KEY (`type`)',
+            'KEY (`user_id`)',
         ], $tableOptions);
 
         $this->createTable('{{%nav__item_child}}', [
