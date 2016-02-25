@@ -1,6 +1,6 @@
 @startuml
 
-namespace chervand.nav.models {
+namespace chervand.nav {
 
     class Nav {
         + id : int

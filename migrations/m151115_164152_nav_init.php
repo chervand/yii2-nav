@@ -15,14 +15,14 @@ class m151115_164152_nav_init extends Migration
             'name' => $this->string(),
             'label' => $this->string()->notNull(),
             'url' => $this->string(),
-            'description' => $this->text(),
+            'description' => $this->string(),
             'PRIMARY KEY (`name`)',
         ], $tableOptions);
 
         $this->createTable('{{%nav}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string()->notNull(),
-            'description' => $this->text(),
+            'description' => $this->string(),
             'root_item' => $this->string()->notNull()->defaultValue('root'),
             'FOREIGN KEY (`root_item`) REFERENCES {{%nav__item}} (`name`) ON DELETE RESTRICT ON UPDATE CASCADE',
         ], $tableOptions);
