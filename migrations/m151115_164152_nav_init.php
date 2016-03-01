@@ -14,6 +14,7 @@ class m151115_164152_nav_init extends Migration
         $this->createTable('{{%nav__item}}', [
             'name' => $this->string(),
             'label' => $this->string()->notNull(),
+            'options' => $this->string(),
             'url' => $this->string(),
             'description' => $this->string(),
             'PRIMARY KEY (`name`)',
@@ -21,9 +22,9 @@ class m151115_164152_nav_init extends Migration
 
         $this->createTable('{{%nav}}', [
             'id' => $this->primaryKey(),
+            'root_item' => $this->string()->notNull()->defaultValue('root'),
             'title' => $this->string()->notNull(),
             'description' => $this->string(),
-            'root_item' => $this->string()->notNull()->defaultValue('root'),
             'FOREIGN KEY (`root_item`) REFERENCES {{%nav__item}} (`name`) ON DELETE RESTRICT ON UPDATE CASCADE',
         ], $tableOptions);
 
